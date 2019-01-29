@@ -42,23 +42,25 @@ for i in range(0, len(y)):
     y[i] = data_list[9][i+9]
     
 #套入公式----------------------------------------------------------
-count = 100
-learn_rate = 0.01
+count = 100                                 #要更新的次數
+learn_rate = 0.01                           #學習率，隨便設定的
 pre_gradient = np.zeros(shape=(163,1))
 
 for _ in range(count):
-    y_head = np.dot(x, w)
+    y_head = np.dot(x, w)                   #將 x*w 預測 ŷ 的值
     
-    loss = y - y_head
+    loss = y - y_head                       #誤差是原始資料 y 減我算出來的 ŷ
     
-    x_transpose = np.transpose(x)
-    gradient = 2 * np.dot(x_transpose,loss)
+    x_transpose = np.transpose(x)           #將 x 矩陣轉換成語 w 相同格式
+    
+    #lossFunction公式
+    gradient = 2 * np.dot(x_transpose,loss) 
     pre_gradient += gradient ** 2
     adagrad = np.sqrt(pre_gradient)
     
     w = w - learn_rate * gradient / adagrad
     
-#學習完成...應該啦
+#權重更新完成，表示學習完成...應該啦
 #處理test.csv的資料------------------------------------------------
 with open('data\\test_X.csv', 'r') as csvfile:
     test_list = [[]for i in range(240)]
@@ -74,7 +76,7 @@ for i in range(len(test_list)):
          if (test_list[i][j] == "NR"):
              test_list[i][j] = 0.0
 
-#設定test_x矩陣，將每個 column 最後一個都設成 1
+#設定 test_x 矩陣，將每個 column 最後一個都設成 1
 test_x = np.zeros(shape=(240, 163))
 for i in range(test_x.shape[0]):
     for j in range(test_x.shape[1]):
